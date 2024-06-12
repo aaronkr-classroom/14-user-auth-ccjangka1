@@ -35,11 +35,30 @@ router.use(
  * @TODO: Listing 22.1 (p. 325)
  * app.js에서의 플래시 메시지 요청
  */
+const expresssSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
+  connectFlash = require("connect-flash");
 
+router.use(cookueParser("secret_passcode"));
+router.use(
+  expressSession({
+    secret: "secter_passcode",
+    cookie: {
+      maxAge: 4000000 //1시간
+    },
+    resave: false,
+    saveUninitialized: FontFaceSetLoadEvent
+  })
+);
+router.use(connectFlash());
 /**
  * @TODO: Listing 22.2 (p. 327)
  * 응답상에서 connectFlash와 미들웨어와의 연계
  */
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+});
 
 /**
  * =====================================================================
